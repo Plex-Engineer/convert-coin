@@ -66,8 +66,7 @@ export async function ethToCanto(address, nodeAddress) {
 export function formatNumber(bigNumber, decimals) {
     const unitFormatted = ethers.utils.formatUnits(bigNumber, decimals);
     const fixedData = parseFloat(unitFormatted).toFixed(3);
-    const commifiedBalance = ethers.utils.commify(fixedData);
-    return commifiedBalance;
+    return fixedData;
 }
 
 async function reformatSender(addressData) {

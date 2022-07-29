@@ -21,9 +21,9 @@ const Container = styled.div`
   flex-direction: column;
   .textField {
     margin: .rem auto;
-    padding: 0.4rem 0;
+    padding: 0.5rem 0;
     display: flex;
-    width: 18rem;
+    width: 20rem;
     justify-content: center;
     align-items: center;
     color: white;
@@ -91,6 +91,23 @@ const Button = styled.button`
   display: flex;
   align-self: center;
   margin-top: 50px;
+  &:hover {
+    background-color: var(--primary-color-dark);
+    color: black;
+    cursor: pointer;
+  }
+`;
+
+const MaxButton = styled.button`
+  font-weight: 300;
+  font-size: 18px;
+  background-color: black;
+  color: var(--primary-color);
+  padding: 0.2rem .4rem;
+  border: .1px solid var(--primary-color);
+  /* margin: 3rem auto; */
+  display: flex;
+  align-self: center;
   &:hover {
     background-color: var(--primary-color-dark);
     color: black;
@@ -174,6 +191,7 @@ export const chain = {
 export const memo = "";
 export const nodeAddress = "https://chain.plexnode.wtf";
 export const evmEndpoint = "https://eth.plexnode.wtf ";
+const REFRESH_RATE = 8000;
 // ----------------------------------------------------------------------------------- \\
 
 const ConvertCoin = () => {
@@ -223,8 +241,8 @@ const ConvertCoin = () => {
         memo
       );
       setConfirmation("waiting for the transaction to be verified...");
-      
-      setTimeout(() => requestData(), 7000);
+
+      setTimeout(() => requestData(), REFRESH_RATE);
       setTimeout(
         () =>
           setConfirmation(
@@ -235,7 +253,7 @@ const ConvertCoin = () => {
               " to " +
               token.wName
           ),
-        8000
+        REFRESH_RATE
       );
     } else {
       if (convertAmount.gt(BigNumber.from(evmBalance))) {
@@ -256,8 +274,8 @@ const ConvertCoin = () => {
         memo
       );
       setConfirmation("waiting for the transaction to be verified...");
-      
-      setTimeout(() => requestData(), 7000);
+
+      setTimeout(() => requestData(), REFRESH_RATE);
       setTimeout(
         () =>
           setConfirmation(
@@ -268,8 +286,16 @@ const ConvertCoin = () => {
               " to " +
               token.name
           ),
-        8000
+        REFRESH_RATE
       );
+    }
+  }
+
+  const setMaxAmount = () => {
+    if (convertCoin) {
+      setAmount(formatNumber(BigNumber.from(nativeBalance), token.decimals));
+    } else {
+      setAmount(formatNumber(BigNumber.from(evmBalance), token.decimals));
     }
   }
 
@@ -289,8 +315,8 @@ const ConvertCoin = () => {
     setNativeBalance(coinAmount);
   };
   useEffect(() => {
-    setNativeBalance('0');
-    setEVMBalance('0');
+    setNativeBalance("0");
+    setEVMBalance("0");
     requestData();
   }, [token]);
 
@@ -353,8 +379,10 @@ const ConvertCoin = () => {
                 type="text"
                 name="amoubt"
                 id="amount"
+                value={amount}
                 onChange={(e) => setAmount(e.target.value)}
               />
+              <MaxButton onClick={() => setMaxAmount()}>max</MaxButton>
             </div>
             <Transfer onClick={() => transaction()}>transfer</Transfer>
           </div>
