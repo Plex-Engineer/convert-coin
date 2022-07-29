@@ -222,6 +222,15 @@ export const convertCoinsBase = [
     nativeName : 'erc20/0xaDF40027911bB7fdc402077ba56B6ae0Dfb9fC71',
     decimals : 6,
   },
+  {
+    name : "tcanto", // native canonical name
+    wName : "wtcanto", // ERC20 canonical name
+    wAddress : "0x80b5a32E4F032B2a058b4F29EC95EEfEEB87aDcd", // the ERC20 contract address
+    icon : icons.WETH,
+    value: "0",
+    nativeName : 'ibc/AE13136613079A14B4CCC71473D5D1D6756060D4787ED1051BC7657D270D7452', // mapping to the actual native token name,
+    decimals : 18
+  },
 ]
 
 
