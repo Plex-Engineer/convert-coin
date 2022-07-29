@@ -65,8 +65,12 @@ export async function ethToCanto(address, nodeAddress) {
 
 export function formatNumber(bigNumber, decimals) {
     const unitFormatted = ethers.utils.formatUnits(bigNumber, decimals);
-    const fixedData = parseFloat(unitFormatted).toFixed(3);
-    return fixedData;
+    const split = unitFormatted.split('.');
+    if (split.length > 1) {
+        const decimals = split[1].length;
+        return split[0] + "." + split[1].slice(0, Math.min(3, decimals));
+    }
+    return split[0];
 }
 
 async function reformatSender(addressData) {
