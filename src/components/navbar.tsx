@@ -1,18 +1,17 @@
 import styled from "styled-components";
 import logo from "../assets/logo.svg";
-import { NavLink, useLocation } from "react-router-dom";
-import WalletConnectProvider from "@walletconnect/web3-provider";
-import { useState } from "react";
-import ReactModal from "react-modal";
+import { useEffect, useState } from "react";
 import menu from "../assets/menu.svg";
-import { ModalManager, ModalType } from "./modalManager";
-import { WalletButton } from "./walletButton";
-import WalletModal from "components/modals/walletModal";
-import { useEthers, useEtherBalance, useNetwork } from "@usedapp/core";
-import { formatEther } from "@ethersproject/units";
 import { formatBigNumber } from "utils";
-import { networkProperties} from "../constants/canto"
-import { connectWallet } from "pages/convertTransactions";
+import {
+  connect,
+  getAccountBalance,
+  getChainIdandAccount,
+} from "../stores/utils/addCantoToWallet";
+
+import { useNetworkInfo } from "../stores/networkinfo";
+
+
 interface propsStyle {
   didScroll: boolean;
 }
@@ -21,18 +20,23 @@ const Container = styled.div<propsStyle>`
   position: sticky;
   top: 0%;
   transition: all 0.1s ease-in-out;
+  & > * {
+    flex: 1;
+  }
   border-bottom: ${(props) =>
     props.didScroll ? "1px solid var(--primary-color)" : "none"};
   background-color: ${(props) => (props.didScroll ? "#09221454" : "none")};
   backdrop-filter: ${(props) => (props.didScroll ? "blur(5px)" : "none")};
   z-index: 1;
-    justify-content: space-between;
-    align-items: center;
+  justify-content: space-between;
+  align-items: center;
   h1 {
-      /* text-shadow: none; */
-      color: var(--primary-color);
-      font-weight: 400;
-    }
+    /* text-shadow: none; */
+    color: var(--primary-color);
+    font-weight: 400;
+    text-align: center;
+    flex-grow: 2;
+  }
   #logo {
     color: var(--primary-color);
     font-weight: bold;
@@ -41,7 +45,6 @@ const Container = styled.div<propsStyle>`
     align-items: center;
     margin: 0 2rem;
     text-align: center;
-
   }
   ul {
     display: flex;
@@ -96,12 +99,11 @@ const Container = styled.div<propsStyle>`
     font-family: "IBM Plex Mono";
     font-weight: 400;
     padding: 0.3rem 0.6rem;
-    margin-right: 2rem;
+    /* margin-right: 2rem; */
     color: var(--primary-color);
     transition: all 0.2s ease-in-out;
-
     &:hover {
-      transform: scale(1.1);
+      transform: scale(1.05);
       cursor: pointer;
       background-color: var(--primary-color);
       color: black;
@@ -172,7 +174,7 @@ const Container = styled.div<propsStyle>`
       display: block;
       margin-right: 1rem;
     }
-    
+
     button {
       /* display: none; */
       background-color: var(--primary-color);
@@ -182,17 +184,6 @@ const Container = styled.div<propsStyle>`
     }
   }
 `;
-
-function getName(value : string){
-switch(value){
-  case "convert":
-    return "convert coin"
-    break
-  default:
-    return value
-}
-}
-
 
 const Glitch = styled.p`
   & {
@@ -204,7 +195,7 @@ const Glitch = styled.p`
 
     position: relative;
     text-shadow: 0.05em 0 0 #00ffd5, -0.03em -0.04em 0 #1d7407,
-        0.025em 0.04em 0 #8bff9f;
+      0.025em 0.04em 0 #8bff9f;
     animation: glitch 725ms infinite;
   }
 
@@ -261,14 +252,40 @@ const Glitch = styled.p`
 `;
 
 const NavBar = () => {
-  const [account, setAccount] = useState('');
+  const netWorkInfo = useNetworkInfo();
 
-  async function connect() {
-   setAccount(await connectWallet());
+  useEffect(() => {
+    const [chainId, account] = getChainIdandAccount();
+    netWorkInfo.setChainId(chainId);
+    netWorkInfo.setAccount(account);
+  },[])
+  
+  //@ts-ignore
+  if (window.ethereum) {
+    //@ts-ignore
+    window.ethereum.on("accountsChanged", () => {
+      window.location.reload();
+    });
+ 
+    //@ts-ignore
+    window.ethereum.on("networkChanged", () => {
+      window.location.reload();
+    });
   }
 
+  async function getBalance() {
+    if (netWorkInfo.account != undefined) {
+      netWorkInfo.setBalance(await getAccountBalance(netWorkInfo.account))
+    }
+  }
+
+  useEffect(() => {
+    getBalance();
+  },[netWorkInfo.account])
+
+
+
   const [colorChange, setColorchange] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [isNavOpen, setIsNavOpen] = useState(false);
   const changeNavbarColor = () => {
     if (window.scrollY >= 2) {
@@ -279,25 +296,26 @@ const NavBar = () => {
   };
   window.addEventListener("scroll", changeNavbarColor);
 
+
   return (
     <Container didScroll={colorChange}>
-
       <div id="logo">
-      <a href="https://canto.io" style={{
-        display : "flex"
-      }}>
-
+        <a
+          href="https://canto.io"
+          style={{
+            display: "flex",
+          }}
+        >
           <img src={logo} alt="Canto" />
 
-        <Glitch>
-          <span aria-hidden="true">Canto</span>
-          Canto
-          <span aria-hidden="true">Canto</span>
-        </Glitch>
-      </a>
-
+          <Glitch>
+            <span aria-hidden="true">Canto</span>
+            Canto
+            <span aria-hidden="true">Canto</span>
+          </Glitch>
+        </a>
       </div>
-      <h1>convert canto</h1>
+      <h1>convert</h1>
       <input
         type="checkbox"
         name="nav-menu"
@@ -307,30 +325,30 @@ const NavBar = () => {
           setIsNavOpen(!isNavOpen);
         }}
       />
-      {account ? (
-        <button onClick={()=>{
-        }}>
-          CANTO |{" "}
-          {account?.substring(0, 5) + ".."}
-          
+      {netWorkInfo.isConnected ? (
+        <button
+          onClick={() => {
+            // setIsModalOpen(true)
+          }}
+        >
+          {formatBigNumber(netWorkInfo.balance)}&nbsp;
+          <span
+            style={{
+              fontWeight: "600",
+            }}
+          >
+            CANTO
+          </span>{" "}
+          | {netWorkInfo.account?.substring(0, 5) + ".."}
         </button>
       ) : (
         <button onClick={() => connect()}>connect wallet</button>
       )}
-
-      <ModalManager
-        isOpen={isModalOpen}
-        modalType={ModalType.BALANCE}
-        onClose={() => {
-          setIsModalOpen(false);
-        }}
-      />
-      <label htmlFor="menu-checkbox" style={{display : "none"}}>
+      <label htmlFor="menu-checkbox" style={{ display: "none" }}>
         <img id="nav-menu" src={menu} />
       </label>
     </Container>
   );
 };
-
 
 export default NavBar;

@@ -15,6 +15,7 @@ import {
 } from "./convertTransactions";
 import { BigNumber, ethers } from "ethers";
 import { abi } from "constants/abi";
+import { useNetworkInfo } from "stores/networkinfo";
 
 const Container = styled.div`
   display: flex;
@@ -103,8 +104,8 @@ const MaxButton = styled.button`
   font-size: 18px;
   background-color: black;
   color: var(--primary-color);
-  padding: 0.2rem .4rem;
-  border: .1px solid var(--primary-color);
+  padding: 0.2rem 0.4rem;
+  border: 0.1px solid var(--primary-color);
   /* margin: 3rem auto; */
   display: flex;
   align-self: center;
@@ -196,13 +197,14 @@ const REFRESH_RATE = 8000;
 
 const ConvertCoin = () => {
   const [convertCoin, setConvertCoin] = useState(true);
-  const [amount, setAmount] = useState("0");
+  const [amount, setAmount] = useState("0.0");
   let nativeBalances = new Array();
-  const [address, setAddress] = useState("");
   const [nativeBalance, setNativeBalance] = useState("0");
   const [evmBalance, setEVMBalance] = useState("0");
   const [token, setToken] = useState(convertCoinsBase[0]);
   const [confirmation, setConfirmation] = useState("");
+
+  const { account } = useNetworkInfo();
 
   async function getEvmTokenBalance() {
     const provider = new ethers.providers.JsonRpcProvider(evmEndpoint);
@@ -211,13 +213,13 @@ const ConvertCoin = () => {
       abi.Erc20,
       provider
     );
-    const bal = await erc20Contract.balanceOf(address);
+    const bal = await erc20Contract.balanceOf(account);
     const value = ethers.BigNumber.from(bal).toString();
     return value;
   }
 
   async function transaction() {
-    const cantoAddress = await ethToCanto(address, nodeAddress);
+    const cantoAddress = await ethToCanto(account, nodeAddress);
     const convertAmount = ethers.utils.parseUnits(amount, token.decimals);
     if (convertAmount.isZero()) {
       return;
@@ -297,14 +299,13 @@ const ConvertCoin = () => {
     } else {
       setAmount(formatNumber(BigNumber.from(evmBalance), token.decimals));
     }
-  }
+  };
 
   const requestData = async () => {
-    setAddress(await connectWallet());
     let coinAmount = "0";
-    if (address.length) {
+    if (account != undefined) {
       setEVMBalance(await getEvmTokenBalance());
-      nativeBalances = await getCantoBalance(nodeAddress, address);
+      nativeBalances = await getCantoBalance(nodeAddress, account);
     }
     nativeBalances.forEach((coin) => {
       if (coin.denom.includes(token.nativeName)) {
