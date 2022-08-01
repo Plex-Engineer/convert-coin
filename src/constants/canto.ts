@@ -187,49 +187,40 @@ export const convertCoinsBase = [
     decimals : 18
   },
   {
-    name : "eth", // native canonical name
-    wName : "weth", // ERC20 canonical name
-    wAddress : "0xd72b2F75e3aC892f25a05585F88c7B65bFb332eE", // the ERC20 contract address
-    icon : icons.WETH,
+    name : "usdt", // native canonical name
+    wName : "usdt", // ERC20 canonical name
+    wAddress : "0xd567B3d7B8FE3C79a1AD8dA978812cfC4Fa05e75", // the ERC20 contract address
+    icon : icons.USDT,
     value: "0",
-    nativeName : 'erc20/0xd72b2F75e3aC892f25a05585F88c7B65bFb332eE', // mapping to the actual native token name,
-    decimals : 18
+    nativeName : 'ibc/4F6A2DEFEA52CD8D90966ADCB2BD0593D3993AB0DF7F6AEB3EFD6167D79237B0', // mapping to the actual native token name,
+    decimals : 6
   },
   {
     name : "atom",
-    wName : "watom",
-    wAddress : "0x7961DF330968e14BF2Cfba2EA2689Df60a5940D2",
+    wName : "atom",
+    wAddress : "0xecEEEfCEE421D8062EF8d6b4D814efe4dc898265",
     icon : icons.ATOM,
     value: "0",
-    nativeName : 'erc20/0x7961DF330968e14BF2Cfba2EA2689Df60a5940D2',
-    decimals : 8,
+    nativeName : 'ibc/9117A26BA81E29FA4F78F57DC2BD90CD3D26848101BA880445F119B22A1E254E',
+    decimals : 6,
   },
   {
     name : "usdc",
-    wName : "wusdc",
-    wAddress : "0x48E2e7688b40C61d768b9233c949a236692dB991",
+    wName : "usdc",
+    wAddress : "0x80b5a32E4F032B2a058b4F29EC95EEfEEB87aDcd",
     icon : icons.USDC,
     value: "0",
-    nativeName : 'erc20/0x48E2e7688b40C61d768b9233c949a236692dB991',
+    nativeName : 'ibc/17CD484EE7D9723B847D95015FA3EBD1572FD13BC84FB838F55B18A57450F25B',
     decimals : 6,
   },
   {
-    name : "usdt",
-    wName : "wusdt",
-    wAddress : "0xaDF40027911bB7fdc402077ba56B6ae0Dfb9fC71",
-    icon : icons.USDT,
-    value: "0",
-    nativeName : 'erc20/0xaDF40027911bB7fdc402077ba56B6ae0Dfb9fC71',
-    decimals : 6,
-  },
-  {
-    name : "tcanto", // native canonical name
-    wName : "wtcanto", // ERC20 canonical name
-    wAddress : "0x80b5a32E4F032B2a058b4F29EC95EEfEEB87aDcd", // the ERC20 contract address
+    name : "eth",
+    wName : "eth",
+    wAddress : "0x5FD55A1B9FC24967C4dB09C513C3BA0DFa7FF687",
     icon : icons.WETH,
     value: "0",
-    nativeName : 'ibc/AE13136613079A14B4CCC71473D5D1D6756060D4787ED1051BC7657D270D7452', // mapping to the actual native token name,
-    decimals : 18
+    nativeName : 'ibc/DC186CA7A8C009B43774EBDC825C935CABA9743504CE6037507E6E5CCE12858A',
+    decimals : 18,
   },
 ]
 

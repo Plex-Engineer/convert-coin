@@ -10,6 +10,7 @@ import {
 } from "../stores/utils/addCantoToWallet";
 
 import { useNetworkInfo } from "../stores/networkinfo";
+import { BurgerMenu } from "./BurgerMenu";
 
 
 interface propsStyle {
@@ -300,6 +301,7 @@ const NavBar = () => {
   return (
     <Container didScroll={colorChange}>
       <div id="logo">
+        <BurgerMenu />
         <a
           href="https://canto.io"
           style={{
@@ -325,7 +327,7 @@ const NavBar = () => {
           setIsNavOpen(!isNavOpen);
         }}
       />
-      {netWorkInfo.isConnected ? (
+      {netWorkInfo.account != undefined ? (
         <button
           onClick={() => {
             // setIsModalOpen(true)
