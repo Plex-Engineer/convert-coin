@@ -9,8 +9,6 @@ import {
   txConvertCoin,
   txConvertERC20,
   getCantoBalance,
-  connectWallet,
-  formatNumber,
   ethToCanto,
   formatNumberInput,
 } from "./convertTransactions";
@@ -51,6 +49,10 @@ const Container = styled.div`
     }
   }
 
+  h1 {
+    margin-bottom: 5%;
+  }
+
   .coin {
     border: 2px solid var(--primary-color);
     width: 70rem;
@@ -67,7 +69,7 @@ const Container = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 2rem;
+    gap: 1rem;
     p {
       text-align: center;
     }
@@ -177,9 +179,9 @@ const Transfer = styled.button`
 
 // --------------------------------  constants --------------------------------------- \\
 export const fee = {
-  amount: "200",
+  amount: "10000",
   denom: "acanto",
-  gas: "400000000",
+  gas: "3000000",
 };
 export const unbondingFee = {
   amount: "100",
@@ -193,7 +195,7 @@ export const chain = {
 export const memo = "";
 export const nodeAddress = "https://cosmos.plexnode.wtf";
 export const evmEndpoint = "https://evm.plexnode.wtf";
-const REFRESH_RATE = 8000;
+const REFRESH_RATE = 10000;
 // ----------------------------------------------------------------------------------- \\
 
 const ConvertCoin = () => {
@@ -250,7 +252,7 @@ const ConvertCoin = () => {
       );
       setConfirmation("waiting for the transaction to be verified...");
 
-      setTimeout(() => requestData(), REFRESH_RATE);
+      setTimeout(() => requestData(), REFRESH_RATE - 1000);
       setTimeout(
         () =>
           setConfirmation(
@@ -283,7 +285,7 @@ const ConvertCoin = () => {
       );
       setConfirmation("waiting for the transaction to be verified...");
 
-      setTimeout(() => requestData(), REFRESH_RATE);
+      setTimeout(() => requestData(), REFRESH_RATE - 1000);
       setTimeout(
         () =>
           setConfirmation(
@@ -320,8 +322,9 @@ const ConvertCoin = () => {
         coinAmount = coin.amount;
       }
     });
-
     setNativeBalance(coinAmount);
+
+    console.log(nativeBalance, evmBalance);
   };
   useEffect(() => {
     setNativeBalance("0");
@@ -348,7 +351,9 @@ const ConvertCoin = () => {
         <div>
           <h1>arrivals</h1>
           <h3>
-            balance :{" "}
+            balance
+          </h3>
+          <h3>
             {formatNumberInput(BigNumber.from(nativeBalance), token.decimals)}
           </h3>
           <TokenWallet
@@ -406,7 +411,10 @@ const ConvertCoin = () => {
         <div>
           <h1>canto (evm)</h1>
           <h3>
-            balance : {formatNumberInput(BigNumber.from(evmBalance), token.decimals)}
+            balance
+          </h3>
+          <h3>
+            {formatNumberInput(BigNumber.from(evmBalance), token.decimals)}
           </h3>
           <TokenWallet
             tokens={convertCoinsBase}
