@@ -12,6 +12,7 @@ import {
   connectWallet,
   formatNumber,
   ethToCanto,
+  formatNumberInput,
 } from "./convertTransactions";
 import { BigNumber, ethers } from "ethers";
 import { abi } from "constants/abi";
@@ -186,18 +187,19 @@ export const unbondingFee = {
   gas: "500000",
 };
 export const chain = {
-  chainId: 740,
-  cosmosChainId: "canto_740-1",
+  chainId: 7700,
+  cosmosChainId: "canto_7700-1",
 };
 export const memo = "";
-export const nodeAddress = "https://chain.plexnode.wtf";
-export const evmEndpoint = "https://eth.plexnode.wtf ";
+export const nodeAddress = "https://cosmos.plexnode.wtf";
+export const evmEndpoint = "https://evm.plexnode.wtf";
 const REFRESH_RATE = 8000;
 // ----------------------------------------------------------------------------------- \\
 
 const ConvertCoin = () => {
   const [convertCoin, setConvertCoin] = useState(true);
-  const [amount, setAmount] = useState("0.0");
+  const [amount, setAmount] = useState("0");
+  const [displayAmount, setDisplayAmount] = useState("");
   let nativeBalances = new Array();
   const [nativeBalance, setNativeBalance] = useState("0");
   const [evmBalance, setEVMBalance] = useState("0");
@@ -220,7 +222,11 @@ const ConvertCoin = () => {
 
   async function transaction() {
     const cantoAddress = await ethToCanto(account, nodeAddress);
-    const convertAmount = ethers.utils.parseUnits(amount, token.decimals);
+    const convertAmount = BigNumber.from(amount);
+    const formattedAmount = formatNumberInput(
+      BigNumber.from(amount),
+      token.decimals
+    );
     if (convertAmount.isZero()) {
       return;
     }
@@ -249,10 +255,10 @@ const ConvertCoin = () => {
         () =>
           setConfirmation(
             "you have successfully converted " +
-              amount +
-              " of " +
+              formattedAmount +
+              " of canto " +
               token.name +
-              " to " +
+              " to evm " +
               token.wName
           ),
         REFRESH_RATE
@@ -282,10 +288,10 @@ const ConvertCoin = () => {
         () =>
           setConfirmation(
             "you have successfully converted " +
-              amount +
-              " of " +
+              formattedAmount +
+              " of evm " +
               token.wName +
-              " to " +
+              " to canto " +
               token.name
           ),
         REFRESH_RATE
@@ -295,9 +301,11 @@ const ConvertCoin = () => {
 
   const setMaxAmount = () => {
     if (convertCoin) {
-      setAmount(formatNumber(BigNumber.from(nativeBalance), token.decimals));
+      setAmount(nativeBalance);
+      setDisplayAmount(formatNumberInput(nativeBalance, token.decimals));
     } else {
-      setAmount(formatNumber(BigNumber.from(evmBalance), token.decimals));
+      setAmount(evmBalance);
+      setDisplayAmount(formatNumberInput(evmBalance, token.decimals));
     }
   };
 
@@ -324,7 +332,7 @@ const ConvertCoin = () => {
   return (
     <Container>
       <p className="title">
-        deposit processes are currently easier than withdrawl processes
+        deposit processes are currently easier than withdrawal processes
       </p>
       {confirmation.length != 0 ? (
         <ConfirmationContainer>
@@ -341,7 +349,7 @@ const ConvertCoin = () => {
           <h1>arrivals</h1>
           <h3>
             balance :{" "}
-            {formatNumber(BigNumber.from(nativeBalance), token.decimals)}
+            {formatNumberInput(BigNumber.from(nativeBalance), token.decimals)}
           </h3>
           <TokenWallet
             tokens={convertCoinsBase}
@@ -380,8 +388,15 @@ const ConvertCoin = () => {
                 type="text"
                 name="amoubt"
                 id="amount"
-                value={amount}
-                onChange={(e) => setAmount(e.target.value)}
+                value={displayAmount}
+                onChange={(e) => {
+                  setDisplayAmount(e.target.value);
+                  setAmount(
+                    ethers.utils
+                      .parseUnits(e.target.value, token.decimals)
+                      .toString()
+                  );
+                }}
               />
               <MaxButton onClick={() => setMaxAmount()}>max</MaxButton>
             </div>
@@ -391,7 +406,7 @@ const ConvertCoin = () => {
         <div>
           <h1>canto (evm)</h1>
           <h3>
-            balance : {formatNumber(BigNumber.from(evmBalance), token.decimals)}
+            balance : {formatNumberInput(BigNumber.from(evmBalance), token.decimals)}
           </h3>
           <TokenWallet
             tokens={convertCoinsBase}
