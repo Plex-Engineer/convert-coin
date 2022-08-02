@@ -327,7 +327,7 @@ const NavBar = () => {
           setIsNavOpen(!isNavOpen);
         }}
       />
-      {netWorkInfo.account != undefined ? (
+      {netWorkInfo.account != undefined && netWorkInfo.chainId == "7700" ? (
         <button
           onClick={() => {
             // setIsModalOpen(true)

@@ -29,7 +29,7 @@ const BurgerStyles = {
   },
   bmMenu: {
     background: "#000000",
-    padding: "2.5em 1.5em 0",
+    padding: "0em .5em 0",
     fontSize: "1.15em",
   },
   bmMorphShape: {
@@ -50,10 +50,9 @@ const BurgerStyles = {
     height: "0px",
   },
 };
-
 export const BurgerMenu = () => {
   return (
-    <Menu styles={BurgerStyles}>
+    <Menu  styles={BurgerStyles}>
       <h2>terminal</h2>
       <a id="bridge" className="menu-item" href="https://bridge.canto.io">bridge</a>
       <a id="convertCoin" className="menu-item" href="https://convert.canto.io">convert coin</a>
