@@ -257,7 +257,7 @@ const ConvertCoin = () => {
         const currBalance = await getEvmTokenBalance();
         const prefix = currBalance != evmBalance ? "" : "un"
         setConfirmation(
-          "you have "  + prefix + " successfully converted " +
+          "you have "  + prefix + "successfully converted " +
             formattedAmount +
             " of canto " +
             token.name +
@@ -290,7 +290,7 @@ const ConvertCoin = () => {
         const currBalance = await getEvmTokenBalance();
         const prefix = currBalance != evmBalance ? "" : "un"
         setConfirmation(
-          "you have "  + prefix + " successfully converted " +
+          "you have "  + prefix + "successfully converted " +
             formattedAmount +
             " of evm " +
             token.name +
