@@ -255,14 +255,17 @@ const ConvertCoin = () => {
       setTimeout(() => requestData(), REFRESH_RATE - 1000);
       setTimeout(async () => {
         const currBalance = await getEvmTokenBalance();
-        const prefix = currBalance != evmBalance ? "" : "un"
+        const prefix = currBalance != evmBalance ? "" : "un";
         setConfirmation(
-          "you have "  + prefix + "successfully converted " +
+          "you have " +
+            prefix +
+            "successfully converted " +
             formattedAmount +
             " of canto " +
             token.name +
             " to evm " +
-            token.wName
+            token.wName +
+            (prefix.length != 0 ? ". read more about why in the docs" : "")
         );
       }, REFRESH_RATE);
     } else {
@@ -288,14 +291,17 @@ const ConvertCoin = () => {
       setTimeout(() => requestData(), REFRESH_RATE - 1000);
       setTimeout(async () => {
         const currBalance = await getEvmTokenBalance();
-        const prefix = currBalance != evmBalance ? "" : "un"
+        const prefix = currBalance == evmBalance ? "" : "un";
         setConfirmation(
-          "you have "  + prefix + "successfully converted " +
+          "you have " +
+            prefix +
+            "successfully converted " +
             formattedAmount +
             " of evm " +
             token.name +
             " to canto " +
-            token.wName
+            token.wName +
+            (prefix.length != 0 ? ". read more about why in the docs" : "")
         );
       }, REFRESH_RATE);
     }
