@@ -177,6 +177,17 @@ const Transfer = styled.button`
   }
 `;
 
+const DocLink = () => {
+  return (
+    <a
+      style={{ color: "white" }}
+      href="https://canto.gitbook.io/canto/user-guides/bridging-assets-to-canto/transfering-canto-assets-to-canto-evm"
+    >
+      here
+    </a>
+  );
+};
+
 // --------------------------------  constants --------------------------------------- \\
 export const fee = {
   amount: "10000",
@@ -206,7 +217,7 @@ const ConvertCoin = () => {
   const [nativeBalance, setNativeBalance] = useState("0");
   const [evmBalance, setEVMBalance] = useState("0");
   const [token, setToken] = useState(convertCoinsBase[0]);
-  const [confirmation, setConfirmation] = useState("");
+  const [confirmation, setConfirmation] = useState<React.ReactNode>(null);
 
   const { account } = useNetworkInfo();
 
@@ -256,16 +267,20 @@ const ConvertCoin = () => {
       setTimeout(async () => {
         const currBalance = await getEvmTokenBalance();
         const prefix = currBalance != evmBalance ? "" : "un";
-        setConfirmation(
+        const message =
           "you have " +
-            prefix +
-            "successfully converted " +
-            formattedAmount +
-            " of canto " +
-            token.name +
-            " to evm " +
-            token.wName +
-            (prefix.length != 0 ? ". read more about why in the docs" : "")
+          prefix +
+          "successfully converted " +
+          formattedAmount +
+          " of canto " +
+          token.name +
+          " to evm " +
+          token.wName +
+          (prefix.length != 0 ? ". read more about why in the docs " : "");
+        setConfirmation(
+          <>
+            {message} {prefix.length != 0 ? <DocLink /> : null}
+          </>
         );
       }, REFRESH_RATE);
     } else {
@@ -292,16 +307,20 @@ const ConvertCoin = () => {
       setTimeout(async () => {
         const currBalance = await getEvmTokenBalance();
         const prefix = currBalance != evmBalance ? "" : "un";
-        setConfirmation(
+        const message =
           "you have " +
-            prefix +
-            "successfully converted " +
-            formattedAmount +
-            " of evm " +
-            token.name +
-            " to canto " +
-            token.wName +
-            (prefix.length != 0 ? ". read more about why in the docs" : "")
+          prefix +
+          "successfully converted " +
+          formattedAmount +
+          " of evm " +
+          token.name +
+          " to canto " +
+          token.wName +
+          (prefix.length != 0 ? ". read more about why in the docs " : "");
+        setConfirmation(
+          <>
+            {message} {prefix.length != 0 ? <DocLink /> : null}
+          </>
         );
       }, REFRESH_RATE);
     }
@@ -343,12 +362,12 @@ const ConvertCoin = () => {
       <p className="title">
         deposit processes are currently easier than withdrawal processes
       </p>
-      {confirmation.length != 0 ? (
+      {confirmation != null ? (
         <ConfirmationContainer>
           <div className="message">
             <p>{confirmation}</p>
           </div>
-          <CloseNotificationButton onClick={() => setConfirmation("")}>
+          <CloseNotificationButton onClick={() => setConfirmation(null)}>
             x
           </CloseNotificationButton>
         </ConfirmationContainer>
