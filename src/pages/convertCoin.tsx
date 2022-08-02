@@ -253,18 +253,18 @@ const ConvertCoin = () => {
       setConfirmation("waiting for the transaction to be verified...");
 
       setTimeout(() => requestData(), REFRESH_RATE - 1000);
-      setTimeout(
-        () =>
-          setConfirmation(
-            "you have successfully converted " +
-              formattedAmount +
-              " of canto " +
-              token.name +
-              " to evm " +
-              token.wName
-          ),
-        REFRESH_RATE
-      );
+      setTimeout(async () => {
+        const currBalance = await getEvmTokenBalance();
+        const prefix = currBalance != evmBalance ? "" : "un"
+        setConfirmation(
+          "you have "  + prefix + " successfully converted " +
+            formattedAmount +
+            " of canto " +
+            token.name +
+            " to evm " +
+            token.wName
+        );
+      }, REFRESH_RATE);
     } else {
       if (convertAmount.gt(BigNumber.from(evmBalance))) {
         setConfirmation(
@@ -286,18 +286,18 @@ const ConvertCoin = () => {
       setConfirmation("waiting for the transaction to be verified...");
 
       setTimeout(() => requestData(), REFRESH_RATE - 1000);
-      setTimeout(
-        () =>
-          setConfirmation(
-            "you have successfully converted " +
-              formattedAmount +
-              " of evm " +
-              token.wName +
-              " to canto " +
-              token.name
-          ),
-        REFRESH_RATE
-      );
+      setTimeout(async () => {
+        const currBalance = await getEvmTokenBalance();
+        const prefix = currBalance != evmBalance ? "" : "un"
+        setConfirmation(
+          "you have "  + prefix + " successfully converted " +
+            formattedAmount +
+            " of evm " +
+            token.name +
+            " to canto " +
+            token.wName
+        );
+      }, REFRESH_RATE);
     }
   }
 
@@ -350,9 +350,7 @@ const ConvertCoin = () => {
       <div className="coin">
         <div>
           <h1>arrivals</h1>
-          <h3>
-            balance
-          </h3>
+          <h3>balance</h3>
           <h3>
             {formatNumberInput(BigNumber.from(nativeBalance), token.decimals)}
           </h3>
@@ -410,9 +408,7 @@ const ConvertCoin = () => {
         </div>
         <div>
           <h1>canto (evm)</h1>
-          <h3>
-            balance
-          </h3>
+          <h3>balance</h3>
           <h3>
             {formatNumberInput(BigNumber.from(evmBalance), token.decimals)}
           </h3>
