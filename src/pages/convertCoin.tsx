@@ -291,7 +291,7 @@ const ConvertCoin = () => {
       setTimeout(() => requestData(), REFRESH_RATE - 1000);
       setTimeout(async () => {
         const currBalance = await getEvmTokenBalance();
-        const prefix = currBalance == evmBalance ? "" : "un";
+        const prefix = currBalance != evmBalance ? "" : "un";
         setConfirmation(
           "you have " +
             prefix +
