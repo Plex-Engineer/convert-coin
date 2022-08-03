@@ -418,12 +418,24 @@ const ConvertCoin = () => {
                 id="amount"
                 value={displayAmount}
                 onChange={(e) => {
-                  setDisplayAmount(e.target.value);
+                  const value = e.target.value;
+                  setDisplayAmount(value);
                   setAmount(
-                    ethers.utils
-                      .parseUnits(e.target.value, token.decimals)
-                      .toString()
+                    ethers.utils.parseUnits(value, token.decimals).toString()
                   );
+
+                  const split = value.split(".");
+                  if (split.length > 1) {
+                    const decimals = split[1];
+                    if (decimals.length > token.decimals) {
+                      setConfirmation(
+                        "this token does not have this many decimal places points..."
+                      );
+                      setAmount(
+                        ethers.utils.parseUnits("0", token.decimals).toString()
+                      );
+                    }
+                  }
                 }}
               />
               <MaxButton onClick={() => setMaxAmount()}>max</MaxButton>
