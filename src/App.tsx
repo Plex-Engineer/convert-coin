@@ -1,28 +1,19 @@
 import "App.css";
-import DexMarket from "pages/dexMarket";
-import LightPaper from "pages/lightPaper";
-import LendingMarket from "pages/LendingMarket";
-import Developers from "pages/forDeveloper";
 import styled from "styled-components";
 import GlobalStyles from "styles/global-styles";
-import NavBar from "components/navbar";
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  useLocation,
-} from "react-router-dom";
+
+import { NavBar } from "cantoui";
+
+import { BrowserRouter as Router, useLocation } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
-import BridgePage from "pages/bridge";
 import ReactGA from "react-ga";
 import bgNoise from "assets/bg-noise.gif";
 import "react-toastify/dist/ReactToastify.css";
-import {ToastContainer } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import { useEffect, useState } from "react";
-import Governance from "pages/governance";
-import Proposal from "pages/proposal";
-import Staking from "pages/Staking";
 import ConvertCoin from "pages/convertCoin";
+import { useNetworkInfo } from "stores/networkinfo";
+import { getAccountBalance, getChainIdandAccount, connect } from "stores/utils/addCantoToWallet";
 
 //Styling
 
@@ -119,7 +110,7 @@ const Overlay = styled.div<OverlayProps>`
       transparent 100%
     );
     background-repeat: no-repeat;
-    background-position : 0 1000vh;
+    background-position: 0 1000vh;
     animation: scan 10s linear 0s 1;
   }
   @keyframes scan {
@@ -128,7 +119,7 @@ const Overlay = styled.div<OverlayProps>`
     }
     35%,
     100% {
-      background-position: 0 ${(props) => props.height +300}px;
+      background-position: 0 ${(props) => props.height + 300}px;
     }
   }
 `;
@@ -138,6 +129,35 @@ function App() {
   ReactGA.initialize("G-E4E4NWCS2V");
   ReactGA.pageview(window.location.pathname + window.location.search);
 
+  const netWorkInfo = useNetworkInfo();
+  useEffect(() => {
+    const [chainId, account] = getChainIdandAccount();
+    netWorkInfo.setChainId(chainId);
+    netWorkInfo.setAccount(account);
+  }, []);
+
+  //@ts-ignore
+  if (window.ethereum) {
+    //@ts-ignore
+    window.ethereum.on("accountsChanged", () => {
+      window.location.reload();
+    });
+
+    //@ts-ignore
+    window.ethereum.on("networkChanged", () => {
+      window.location.reload();
+    });
+  }
+
+  async function getBalance() {
+    if (netWorkInfo.account != undefined) {
+      netWorkInfo.setBalance(await getAccountBalance(netWorkInfo.account));
+    }
+  }
+
+  useEffect(() => {
+    getBalance();
+  }, [netWorkInfo.account]);
   return (
     <HelmetProvider>
       <ToastContainer />
@@ -146,8 +166,16 @@ function App() {
           <StaticOverlay url={bgNoise} />
           <ScanlinesOverlay />
           <GlobalStyles />
-          <OverlayLines/>
-          <NavBar/> 
+          <OverlayLines />
+          <NavBar
+            chainId={Number(netWorkInfo.chainId)}
+            account={netWorkInfo.account || ""}
+            title={"convert coin"}
+            currency={"CANTO"}
+            balance={netWorkInfo.balance}
+            isConnected={netWorkInfo.isConnected && netWorkInfo.account != null}
+            onClick={() => connect()}
+          />
           <ConvertCoin />
         </Container>
       </Router>
@@ -158,26 +186,28 @@ function App() {
 const OverlayLines = () => {
   const location = useLocation();
   let scrollHeight = Math.max(
-    document.body.scrollHeight, document.documentElement.scrollHeight,
-    document.body.offsetHeight, document.documentElement.offsetHeight,
-    document.body.clientHeight, document.documentElement.clientHeight
+    document.body.scrollHeight,
+    document.documentElement.scrollHeight,
+    document.body.offsetHeight,
+    document.documentElement.offsetHeight,
+    document.body.clientHeight,
+    document.documentElement.clientHeight
   );
-  const [documentHeight, setDocumentHeight] = useState(
-    scrollHeight
-  );
+  const [documentHeight, setDocumentHeight] = useState(scrollHeight);
 
   useEffect(() => {
-   setTimeout(()=>{
-    let scrollHeight = Math.max(
-      document.body.scrollHeight, document.documentElement.scrollHeight,
-      document.body.offsetHeight, document.documentElement.offsetHeight,
-      document.body.clientHeight, document.documentElement.clientHeight
-    );
-    setDocumentHeight(scrollHeight);
-
-   }, 2000)
+    setTimeout(() => {
+      let scrollHeight = Math.max(
+        document.body.scrollHeight,
+        document.documentElement.scrollHeight,
+        document.body.offsetHeight,
+        document.documentElement.offsetHeight,
+        document.body.clientHeight,
+        document.documentElement.clientHeight
+      );
+      setDocumentHeight(scrollHeight);
+    }, 2000);
   }, [location]);
-
 
   return <Overlay height={documentHeight} />;
 };
