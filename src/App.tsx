@@ -1,9 +1,7 @@
 import "App.css";
 import styled from "styled-components";
 import GlobalStyles from "styles/global-styles";
-
 import { NavBar } from "cantoui";
-
 import { BrowserRouter as Router, useLocation } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
 import ReactGA from "react-ga";
@@ -14,9 +12,9 @@ import { useEffect, useState } from "react";
 import ConvertCoin from "pages/convertCoin";
 import { useNetworkInfo } from "stores/networkinfo";
 import { getAccountBalance, getChainIdandAccount, connect } from "stores/utils/addCantoToWallet";
+import logo from "./assets/logo.svg";
 
 //Styling
-
 const Container = styled.div`
   display: flex;
   flex-direction: column;
@@ -168,6 +166,7 @@ function App() {
           <GlobalStyles />
           <OverlayLines />
           <NavBar
+            logo={logo}
             chainId={Number(netWorkInfo.chainId)}
             account={netWorkInfo.account || ""}
             title={"convert coin"}
