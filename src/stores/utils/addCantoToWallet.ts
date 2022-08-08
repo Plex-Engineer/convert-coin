@@ -25,30 +25,34 @@ export function addNetwork() {
     });
 }
 
-export function getChainIdandAccount(): string[] | undefined[] {
+export async function getChainIdandAccount(): Promise<string[] | undefined[]> {
   //@ts-ignore
   if (window.ethereum) {
+    //@ts-ignore
+    await window.ethereum.request({ method: "eth_requestAccounts" });
     //@ts-ignore
     return [window.ethereum.networkVersion, window.ethereum.selectedAddress];
   }
   return [undefined, undefined];
 }
 export async function connect() {
+  //@ts-ignore
+  if (window.ethereum) {
     //@ts-ignore
-    if (window.ethereum) {
-      //@ts-ignore
-      window.ethereum.request({method: "eth_requestAccounts"});
-      addNetwork();
-    }
+    window.ethereum.request({ method: "eth_requestAccounts" });
+    addNetwork();
   }
+}
 
 export async function getAccountBalance(account: string | undefined) {
+  //@ts-ignore
+  if (window.ethereum) {
     //@ts-ignore
-    if (window.ethereum) {
-        //@ts-ignore
-        let balance = await window.ethereum.request({method: 'eth_getBalance', params: [account, 'latest']})
-        return ethers.utils.formatEther(balance);
-    }
-    return "0";
- 
+    let balance = await window.ethereum.request({
+      method: "eth_getBalance",
+      params: [account, "latest"],
+    });
+    return ethers.utils.formatEther(balance);
+  }
+  return "0";
 }

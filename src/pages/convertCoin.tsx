@@ -20,7 +20,6 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   .textField {
-    margin: .rem auto;
     padding: 0.5rem 0;
     display: flex;
     width: 20rem;
@@ -58,11 +57,12 @@ const Container = styled.div`
     width: 70rem;
     margin: 0 auto;
     margin-top: 4rem;
-    min-height: calc(100vh - 38rem);
+    min-height: calc(100vh - 30rem);
 
     display: flex;
     align-items: center;
     color: #fff;
+    background: black;
   }
   .coin > div {
     flex: 1;
@@ -142,7 +142,6 @@ const ConfirmationContainer = styled.div`
 
 const CloseNotificationButton = styled.button`
   align-self: center;
-  align-itenm: center;
   font-weight: 300;
   font-size: 18px;
   background-color: black;
@@ -374,7 +373,7 @@ const ConvertCoin = () => {
       ) : null}
       <div className="coin">
         <div>
-          <h1>arrivals</h1>
+          <h1>canto</h1>
           <h3>balance</h3>
           <h3>
             {formatNumberInput(BigNumber.from(nativeBalance), token.decimals)}
@@ -399,7 +398,7 @@ const ConvertCoin = () => {
               setConvertCoin(!convertCoin);
             }}
           >
-            switch
+          <CypherText text={convertCoin ? "------>" : "<------"} />
           </Button>
           <div
             style={{
@@ -407,7 +406,6 @@ const ConvertCoin = () => {
               marginBottom: "0rem",
             }}
           >
-            <CypherText text={convertCoin ? "------>" : "<------"} />
           </div>
           <div style={{ display: "flex", marginBottom: "5rem" }}>
             <div className="textField">
