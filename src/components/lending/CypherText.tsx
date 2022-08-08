@@ -33,7 +33,7 @@ const CypherText = ({text} : Props) => {
         },[text]
     )
   return (
-    <h1 className='balance'>{value}</h1>
+    <h2 className='balance'>{value}</h2>
   )
 
   function timeout(delay: number) {
