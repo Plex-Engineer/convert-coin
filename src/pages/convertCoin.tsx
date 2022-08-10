@@ -363,7 +363,7 @@ const ConvertCoin = () => {
         various third-party dapps operate on the canto evm, which tracks assets
         independently. to convert your native canto assets to/from evm assets,
         please toggle the arrow to the direction you want your assets to flow.
-        when bridging assets out of canto, they{" "}
+        when bridging assets out of canto, the assets{" "}
         <span style={{ fontWeight: 800 }}>must</span> be on the canto native
         side – (not the evm).
       </p>
