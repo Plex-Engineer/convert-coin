@@ -56,8 +56,8 @@ const Container = styled.div`
     border: 2px solid var(--primary-color);
     width: 70rem;
     margin: 0 auto;
-    margin-top: 4rem;
-    min-height: calc(100vh - 30rem);
+    margin-top: 3rem;
+    min-height: calc(100vh - 38rem);
 
     display: flex;
     align-items: center;
@@ -76,11 +76,12 @@ const Container = styled.div`
   }
 
   .title {
+    margin-left: 10%;
+    margin-right: 10%;
     text-shadow: none;
     color: white;
-    text-align: center;
-    margin-top: 4rem;
-    font-size: 28px;
+    margin-top: 2rem;
+    font-size: 21px;
   }
 `;
 
@@ -180,7 +181,7 @@ const DocLink = () => {
   return (
     <a
       style={{ color: "white" }}
-      href="https://canto.gitbook.io/canto/user-guides/bridging-assets-to-canto/transfering-canto-assets-to-canto-evm"
+      href="https://canto.gitbook.io/canto/user-guides/getting-started#convert-assets-for-use-on-canto-evm"
     >
       here
     </a>
@@ -347,8 +348,6 @@ const ConvertCoin = () => {
       }
     });
     setNativeBalance(coinAmount);
-
-    console.log(nativeBalance, evmBalance);
   };
   useEffect(() => {
     setNativeBalance("0");
@@ -359,7 +358,14 @@ const ConvertCoin = () => {
   return (
     <Container>
       <p className="title">
-        deposit processes are currently easier than withdrawal processes
+        users that initially bridge their assets will receive them on the canto
+        native blockchain. however, the canto lending market, canto dex, and
+        various third-party dapps operate on the canto evm, which tracks assets
+        independently. to convert your native canto assets to/from evm assets,
+        please toggle the arrow to the direction you want your assets to flow.
+        when bridging assets out of canto, the assets{" "}
+        <span style={{ fontWeight: 800 }}>must</span> be on the canto native
+        side – (not the evm).
       </p>
       {confirmation != null ? (
         <ConfirmationContainer>
@@ -398,15 +404,14 @@ const ConvertCoin = () => {
               setConvertCoin(!convertCoin);
             }}
           >
-          <CypherText text={convertCoin ? "------>" : "<------"} />
+            <CypherText text={convertCoin ? "------>" : "<------"} />
           </Button>
           <div
             style={{
               marginTop: ".75rem",
               marginBottom: "0rem",
             }}
-          >
-          </div>
+          ></div>
           <div style={{ display: "flex", marginBottom: "5rem" }}>
             <div className="textField">
               <p style={{ marginRight: "10px" }}>amount: </p>
