@@ -8,7 +8,7 @@ import { BigNumber } from "ethers";
 import USDC from "assets/icons/USDC.svg";
 import USDT from "assets/icons/USDT.svg";
 import ATOM from "assets/icons/ATOM.svg";
-
+import Empty from "assets/icons/empty.svg"
 
 
 export const icons = {
