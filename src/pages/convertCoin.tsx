@@ -57,20 +57,31 @@ const Container = styled.div`
     width: 70rem;
     margin: 0 auto;
     margin-top: 3rem;
-    min-height: calc(100vh - 38rem);
-
+    height: 30rem;
     display: flex;
     align-items: center;
     color: #fff;
     background: black;
+    padding-bottom: 4rem;
+    padding-top: 1rem;
+  }
+
+  .switch {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    justify-items: center;
   }
   .coin > div {
     flex: 1;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 1rem;
+    gap: 2.6rem;
     p {
+      text-align: center;
+    }
+    .balance {
       text-align: center;
     }
   }
@@ -82,6 +93,10 @@ const Container = styled.div`
     color: white;
     margin-top: 2rem;
     font-size: 21px;
+  }
+
+  .cypher {
+    letter-spacing: -8px;
   }
 `;
 
@@ -104,7 +119,7 @@ const Button = styled.button`
 `;
 
 const MaxButton = styled.button`
-  font-weight: 300;
+  font-weight: 500;
   font-size: 18px;
   background-color: black;
   color: var(--primary-color);
@@ -159,14 +174,13 @@ const CloseNotificationButton = styled.button`
 `;
 
 const Transfer = styled.button`
-  font-weight: 300;
-  font-size: 18px;
+  font-weight: 800;
+  font-size: 20px;
   background-color: black;
   color: var(--primary-color);
   padding: 0.2rem 2rem;
   border: 1px solid var(--primary-color);
   /* margin: 3rem auto; */
-  margin-left: 1rem;
   display: flex;
   align-self: center;
 
@@ -380,10 +394,12 @@ const ConvertCoin = () => {
       <div className="coin">
         <div>
           <h1>canto</h1>
-          <h3>balance</h3>
-          <h3>
-            {formatNumberInput(BigNumber.from(nativeBalance), token.decimals)}
-          </h3>
+          <div className="balance">
+            <h3>balance</h3>
+            <h3>
+              {formatNumberInput(BigNumber.from(nativeBalance), token.decimals)}
+            </h3>
+          </div>
           <TokenWallet
             tokens={convertCoinsBase}
             wrapped={false}
@@ -396,25 +412,36 @@ const ConvertCoin = () => {
         <div
           style={{
             display: "flex",
-            justifyContent: "flex-end",
+            marginTop: "4.8rem",
+            // justifyContent: "flex-end",
           }}
         >
+          <div className="switch">
           <Button
             onClick={() => {
               setConvertCoin(!convertCoin);
             }}
           >
-            <CypherText text={convertCoin ? "------>" : "<------"} />
+            <CypherText
+              text={convertCoin ? "------------->" : "<-------------"}
+            />
           </Button>
+          <p style={{
+            marginTop : "1rem"
+          }}>{convertCoin ? "click to switch " : "click to switch"}</p>
+          </div>
+
           <div
             style={{
-              marginTop: ".75rem",
-              marginBottom: "0rem",
+              display: "flex",
+              flexDirection: "column",
+              gap: "2rem",
+              marginBottom: "4rem",
+              marginTop: "5.3rem",
             }}
-          ></div>
-          <div style={{ display: "flex", marginBottom: "5rem" }}>
+          >
             <div className="textField">
-              <p style={{ marginRight: "10px" }}>amount: </p>
+              <p style={{ marginRight: "10px", fontWeight : "600" }}>amount: </p>
               <input
                 type="text"
                 name="amoubt"
@@ -448,10 +475,13 @@ const ConvertCoin = () => {
         </div>
         <div>
           <h1>canto (evm)</h1>
-          <h3>balance</h3>
-          <h3>
-            {formatNumberInput(BigNumber.from(evmBalance), token.decimals)}
-          </h3>
+          <div className="balance">
+            <h3>balance</h3>
+            <h3>
+              {formatNumberInput(BigNumber.from(evmBalance), token.decimals)}
+            </h3>
+          </div>
+
           <TokenWallet
             tokens={convertCoinsBase}
             wrapped
