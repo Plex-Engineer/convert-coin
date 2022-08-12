@@ -15,6 +15,7 @@ import {
 import { BigNumber, ethers } from "ethers";
 import { abi } from "constants/abi";
 import { useNetworkInfo } from "stores/networkinfo";
+import { GenPubKey } from "./genPubKey";
 
 const Container = styled.div`
   display: flex;
@@ -361,6 +362,7 @@ const ConvertCoin = () => {
       <p className="title">
         deposit processes are currently easier than withdrawal processes
       </p>
+      <GenPubKey/>
       {confirmation != null ? (
         <ConfirmationContainer>
           <div className="message">
