@@ -20,6 +20,7 @@ export async function signAndBroadcastTxMsg(msg, senderObj, chain, nodeAddress, 
         body: generatePostBodyBroadcast(raw),
     };
 
+    console.log(nodeAddress, generateEndpointBroadcast(), postOptions)
     const broadcastPost = await fetch(
         nodeAddress + generateEndpointBroadcast(),
         postOptions
@@ -117,7 +118,6 @@ export async function txConvertCoin(cantoAddress, denom, amount, nodeAddressIP, 
 
     // get sender object using eth address
     const senderObj = await getSenderObj(account, nodeAddressIP);
-
     const params = {
         denom: denom, //native canto asset ibcXXXXXXXXXXX
         amount: amount,
@@ -142,6 +142,7 @@ export async function txConvertERC20(erc20ContractAddress, amount, receiverCanto
         receiverEvmosFormatted: receiverCantoAddress,
         senderHexFormatted: account,
     }
+
     const msg = createTxMsgConvertERC20(chain, senderObj, fee, memo, params);
     await signAndBroadcastTxMsg(msg, senderObj, chain, nodeAddressIP, account);
 }

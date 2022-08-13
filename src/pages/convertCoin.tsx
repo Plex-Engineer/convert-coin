@@ -15,6 +15,7 @@ import {
 import { BigNumber, ethers } from "ethers";
 import { abi } from "constants/abi";
 import { useNetworkInfo } from "stores/networkinfo";
+import { GenPubKey } from "./genPubKey";
 
 const Container = styled.div`
   display: flex;
@@ -381,6 +382,7 @@ const ConvertCoin = () => {
         <span style={{ fontWeight: 800 }}>must</span> be on the canto native
         side – (not the evm).
       </p>
+      <GenPubKey/>
       {confirmation != null ? (
         <ConfirmationContainer>
           <div className="message">
