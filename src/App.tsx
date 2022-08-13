@@ -11,7 +11,11 @@ import { ToastContainer } from "react-toastify";
 import { useEffect, useState } from "react";
 import ConvertCoin from "pages/convertCoin";
 import { useNetworkInfo } from "stores/networkinfo";
-import { getAccountBalance, getChainIdandAccount, connect } from "stores/utils/addCantoToWallet";
+import {
+  getAccountBalance,
+  getChainIdandAccount,
+  connect,
+} from "stores/utils/addCantoToWallet";
 import logo from "./assets/logo.svg";
 
 //Styling
@@ -160,7 +164,7 @@ function App() {
   useEffect(() => {
     getBalance();
   }, [netWorkInfo.account]);
-  
+
   return (
     <HelmetProvider>
       <ToastContainer />
@@ -179,6 +183,7 @@ function App() {
             balance={netWorkInfo.balance}
             isConnected={netWorkInfo.isConnected && netWorkInfo.account != null}
             onClick={() => connect()}
+            currentPage={"convert coin"}
           />
           <ConvertCoin />
         </Container>
