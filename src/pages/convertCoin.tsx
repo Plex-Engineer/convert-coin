@@ -16,6 +16,7 @@ import { BigNumber, ethers } from "ethers";
 import { abi } from "constants/abi";
 import { useNetworkInfo } from "stores/networkinfo";
 import { GenPubKey } from "./genPubKey";
+import { CantoMainnet } from "cantoui";
 
 const Container = styled.div`
   display: flex;
@@ -219,9 +220,9 @@ export const chain = {
   cosmosChainId: "canto_7700-1",
 };
 export const memo = "";
-export const nodeAddress = "https://cosmos.plexnode.wtf";
-export const evmEndpoint = "https://evm.plexnode.wtf";
-const REFRESH_RATE = 10000;
+export const nodeAddress = CantoMainnet.cosmosAPIEndpoint;
+export const evmEndpoint = CantoMainnet.rpcUrl;
+const REFRESH_RATE = 11000;
 // ----------------------------------------------------------------------------------- \\
 
 const ConvertCoin = () => {
