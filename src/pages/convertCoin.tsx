@@ -16,7 +16,7 @@ import { BigNumber, ethers } from "ethers";
 import { abi } from "constants/abi";
 import { useNetworkInfo } from "stores/networkinfo";
 import { GenPubKey } from "./genPubKey";
-import { CantoMainnet } from "cantoui";
+import { CantoMainnet, useAlert } from "cantoui";
 
 const Container = styled.div`
   display: flex;
@@ -235,7 +235,14 @@ const ConvertCoin = () => {
   const [token, setToken] = useState(convertCoinsBase[0]);
   const [confirmation, setConfirmation] = useState<React.ReactNode>(null);
 
-  const { account } = useNetworkInfo();
+  const { account, hasPubKey} = useNetworkInfo();
+  const alert = useAlert();
+
+  useEffect(() => {
+    if (!hasPubKey) {
+      alert.show("Failure", <GenPubKey />);
+    }
+  }, [account])
 
   async function getEvmTokenBalance() {
     const provider = new ethers.providers.JsonRpcProvider(evmEndpoint);
@@ -383,7 +390,6 @@ const ConvertCoin = () => {
         <span style={{ fontWeight: 800 }}>must</span> be on the canto native
         side – (not the evm).
       </p>
-      <GenPubKey/>
       {confirmation != null ? (
         <ConfirmationContainer>
           <div className="message">

@@ -13,14 +13,11 @@ export const GenPubKey = () => {
     
     
     return (
-        <h1
+        <p
         hidden={networkInfo.hasPubKey}
         style={{
           color: "#b73d3d",
           fontWeight: "bold",
-          paddingTop: "15px",
-          textShadow: "0px 0px black",
-          textAlign: "center"
         }}
       >
         please{" "}
@@ -40,6 +37,6 @@ export const GenPubKey = () => {
         </a>{" "}
         before converting assets
         <div>{pubKeySuccess}</div>
-      </h1>
+      </p>
     )
 }
