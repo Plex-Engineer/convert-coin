@@ -383,7 +383,6 @@ const ConvertCoin = () => {
         <span style={{ fontWeight: 800 }}>must</span> be on the canto native
         side – (not the evm).
       </p>
-      <GenPubKey/>
       {confirmation != null ? (
         <ConfirmationContainer>
           <div className="message">

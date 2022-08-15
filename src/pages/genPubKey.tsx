@@ -6,14 +6,11 @@ import { generatePubKey } from "utils/genPubKey";
 
 
 export const GenPubKey = () => {
-    
     const [pubKeySuccess, setPubKeySuccess] = useState("");
     const networkInfo = useNetworkInfo();
     
-    
-    
     return (
-        <h1
+        <p
         hidden={networkInfo.hasPubKey}
         style={{
           color: "#b73d3d",
@@ -36,10 +33,10 @@ export const GenPubKey = () => {
 
           } 
         >
-          generate public key
+          generate a public key
         </a>{" "}
         before converting assets
         <div>{pubKeySuccess}</div>
-      </h1>
+      </p>
     )
 }
