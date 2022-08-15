@@ -220,8 +220,8 @@ export const chain = {
   cosmosChainId: "canto_7700-1",
 };
 export const memo = "";
-export const nodeAddress = CantoMainnet.cosmosAPIEndpoint;
-export const evmEndpoint = CantoMainnet.rpcUrl;
+export const nodeAddress = 'https://mainnode.plexnode.org:1317';
+export const evmEndpoint = 'https://mainnode.plexnode.org:8545';
 const REFRESH_RATE = 11000;
 // ----------------------------------------------------------------------------------- \\
 
