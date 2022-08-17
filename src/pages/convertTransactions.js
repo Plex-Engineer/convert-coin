@@ -26,6 +26,7 @@ export async function signAndBroadcastTxMsg(msg, senderObj, chain, nodeAddress, 
         postOptions
     );
     const response = await broadcastPost.json();
+    console.log(response);
 }
 
 export async function getSenderObj(address, nodeAddress) {
