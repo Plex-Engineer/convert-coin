@@ -195,10 +195,7 @@ const Transfer = styled.button`
 
 const DocLink = () => {
   return (
-    <a
-      style={{ color: "white" }}
-      href="https://canto.gitbook.io/canto/user-guides/getting-started#convert-assets-for-use-on-canto-evm"
-    >
+    <a style={{ color: "white" }} href="https://discord.gg/yVvkr9RE">
       here
     </a>
   );
@@ -221,8 +218,8 @@ export const chain = {
   cosmosChainId: "canto_7700-1",
 };
 export const memo = "";
-export const nodeAddress = 'https://mainnode.plexnode.org:1317';
-export const evmEndpoint = 'https://mainnode.plexnode.org:8545';
+export const nodeAddress = "https://mainnode.plexnode.org:1317";
+export const evmEndpoint = "https://mainnode.plexnode.org:8545";
 const REFRESH_RATE = 11000;
 // ----------------------------------------------------------------------------------- \\
 
@@ -293,7 +290,9 @@ const ConvertCoin = () => {
           token.name +
           " to evm " +
           token.wName +
-          (prefix.length != 0 ? ". read more about why in the docs " : "");
+          (prefix.length != 0
+            ? ". this may be an issue related to gas. read more about why in the docs (toggle the menu in the corner) or in the canto discord "
+            : "");
         setConfirmation(
           <>
             {message} {prefix.length != 0 ? <DocLink /> : null}
@@ -333,7 +332,9 @@ const ConvertCoin = () => {
           token.name +
           " to canto " +
           token.wName +
-          (prefix.length != 0 ? ". read more about why in the docs " : "");
+          (prefix.length != 0
+            ? ". this may be an issue related to gas. read more about why in the docs (toggle the menu in the corner) or in the canto discord "
+            : "");
         setConfirmation(
           <>
             {message} {prefix.length != 0 ? <DocLink /> : null}
@@ -420,18 +421,22 @@ const ConvertCoin = () => {
           }}
         >
           <div className="switch">
-          <Button
-            onClick={() => {
-              setConvertCoin(!convertCoin);
-            }}
-          >
-            <CypherText
-              text={convertCoin ? "------------->" : "<-------------"}
-            />
-          </Button>
-          <p style={{
-            marginTop : "1rem"
-          }}>{convertCoin ? "click to switch " : "click to switch"}</p>
+            <Button
+              onClick={() => {
+                setConvertCoin(!convertCoin);
+              }}
+            >
+              <CypherText
+                text={convertCoin ? "------------->" : "<-------------"}
+              />
+            </Button>
+            <p
+              style={{
+                marginTop: "1rem",
+              }}
+            >
+              {convertCoin ? "click to switch " : "click to switch"}
+            </p>
           </div>
 
           <div
@@ -444,7 +449,7 @@ const ConvertCoin = () => {
             }}
           >
             <div className="textField">
-              <p style={{ marginRight: "10px", fontWeight : "600" }}>amount: </p>
+              <p style={{ marginRight: "10px", fontWeight: "600" }}>amount: </p>
               <input
                 type="text"
                 name="amoubt"
