@@ -1,6 +1,5 @@
 import { generateEndpointAccount } from "@tharsis/provider";
 import { createMessageSend } from "@tharsis/transactions";
-import { CantoMainnet } from "cantoui";
 import { chain, fee, memo } from "pages/convertCoin";
 import { getSenderObj, signAndBroadcastTxMsg } from "pages/convertTransactions";
 
@@ -61,6 +60,7 @@ export async function generatePubKey(hexAddress, setIsSuccess) {
     // await generate pub key
     setIsSuccess("waiting for the metamask transaction to be signed...");
     const response = await txSend(botAddress, hexAddress, bech32Address, "1"); // await txSend to bot
+    console.log(response);
     setIsSuccess("generating account...");
     const wrapper = async () => {
       const hasPubKey = await checkPubKey(bech32Address);
@@ -75,7 +75,7 @@ export async function generatePubKey(hexAddress, setIsSuccess) {
   }
 
   async function callBot(cantoAddress) {
-    const CANTO_BOT_URL = "https://bot.plexnode.wtf/";
+    const CANTO_BOT_URL = "http://localhost:8000";
       const options = {
           method: "POST",
           headers: {
@@ -103,6 +103,12 @@ export async function generatePubKey(hexAddress, setIsSuccess) {
 		amount: amount,
 		denom: "acanto",
 	};
-	const msg = createMessageSend(chain, senderObj, fee, memo, params);
+
+  const sendFee = {
+    amount: "25000000000000000",
+    denom: "acanto",
+    gas: "250000",
+  };
+	const msg = createMessageSend(chain, senderObj, sendFee, memo, params);
 	return signAndBroadcastTxMsg(msg, senderObj, chain, "https://mainnode.plexnode.org:1317", senderHexAddress);
 }
