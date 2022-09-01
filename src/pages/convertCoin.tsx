@@ -1,10 +1,9 @@
 import DropDownModal from "components/modals/dropDownModal";
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import { StyledPopup } from "./bridge";
 import { convertCoinsBase } from "constants/canto";
 import down from "assets/down.svg";
-import CypherText from "components/lending/CypherText";
+import CypherText from "components/CypherText";
 import {
   txConvertCoin,
   txConvertERC20,
@@ -15,8 +14,7 @@ import {
 import { BigNumber, ethers } from "ethers";
 import { abi } from "constants/abi";
 import { useNetworkInfo } from "stores/networkinfo";
-import { GenPubKey } from "./genPubKey";
-import { CantoMainnet } from "cantoui";
+import Popup from "reactjs-popup";
 
 const Container = styled.div`
   display: flex;
@@ -190,6 +188,21 @@ const Transfer = styled.button`
     background-color: var(--primary-color-dark);
     color: black;
     cursor: pointer;
+  }
+`;
+
+const StyledPopup = styled(Popup)`
+  // use your custom style for ".popup-overlay"
+
+  &-overlay {
+    background-color: #1f4a2c6e;
+    backdrop-filter: blur(2px);
+    z-index: 10;
+  }
+
+  &-content {
+    background-color: black;
+    border: 1px solid var(--primary-color);
   }
 `;
 
