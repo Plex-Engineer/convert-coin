@@ -1,8 +1,8 @@
 import { addNetwork } from "./utils/addCantoToWallet";
-import { CantoMain, CantoTest } from "./utils/networks";
 import create from "zustand";
 import { devtools } from "zustand/middleware";
 import { checkPubKey, getCantoAddressFromMetaMask } from "utils/genPubKey";
+import { CantoMainnet, CantoTestnet } from "cantoui";
 
 
 interface NetworkProps {
@@ -25,8 +25,8 @@ export const useNetworkInfo = create<NetworkProps>()(
     setChainId: (chainId) => {
       set({ chainId: chainId });
       if (
-        Number(chainId) == CantoTest.chainId ||
-        Number(chainId) == CantoMain.chainId
+        Number(chainId) == CantoTestnet.chainId ||
+        Number(chainId) == CantoMainnet.chainId
       ) {
         set({ isConnected: true });
       } else {
