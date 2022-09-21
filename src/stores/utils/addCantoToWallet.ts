@@ -1,6 +1,5 @@
-import { NodeAddresses } from "cantoui";
+import { CantoMainnet, NodeAddresses } from "cantoui";
 import { ethers } from "ethers";
-import { CantoMain } from "./networks";
 
 
 export function addNetwork() {
@@ -10,15 +9,15 @@ export function addNetwork() {
       method: "wallet_addEthereumChain",
       params: [
         {
-          chainId: "0x" + CantoMain.chainId.toString(16),
+          chainId: "0x" + CantoMainnet.chainId.toString(16),
           chainName: "Canto",
           nativeCurrency: {
             name: "Canto Coin",
             symbol: "CANTO",
             decimals: 18,
           },
-          rpcUrls: [NodeAddresses.CantoMainnet.ChandraRPC],
-          blockExplorerUrls: [CantoMain.blockExplorerUrl],
+          rpcUrls: [NodeAddresses.CantoMainnet.Plex.rpcUrl],
+          blockExplorerUrls: [CantoMainnet.blockExplorerUrl],
         },
       ],
     })
