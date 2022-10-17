@@ -14,6 +14,7 @@ import {
   getAccountBalance,
   getChainIdandAccount,
   connect,
+  addNetwork,
 } from "stores/utils/addCantoToWallet";
 import logo from "./assets/logo.svg";
 import { GenPubKey } from "pages/genPubKey";
@@ -134,10 +135,12 @@ function App() {
   useEffect(() => {
     if (!netWorkInfo.hasPubKey) {
       alert.show("Failure", <GenPubKey />);
+    } else if (!netWorkInfo.isConnected) {
+      alert.show("Warning", <p>this network is not supported on convert coin, please <a onClick={addNetwork} style={{cursor: "pointer", textDecoration: "underline"}}>switch networks</a></p>)
     } else {
       alert.close();
     }
-  }, [netWorkInfo.hasPubKey]);
+  }, [netWorkInfo.hasPubKey, netWorkInfo.isConnected]);
 
   async function setChainInfo() {
     const [chainId, account] = await getChainIdandAccount();
@@ -212,7 +215,7 @@ function App() {
             account={netWorkInfo.account || ""}
             currency={"CANTO"}
             balance={netWorkInfo.balance}
-            isConnected={netWorkInfo.isConnected && netWorkInfo.account != null}
+            isConnected={netWorkInfo.account != null}
             onClick={() => connect()}
             currentPage={"convert coin"}
             pageList={pageList}
