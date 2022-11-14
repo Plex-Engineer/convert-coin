@@ -4,6 +4,7 @@ import { chain, fee, memo } from "pages/convertCoin";
 import { getSenderObj, signAndBroadcastTxMsg } from "pages/convertTransactions";
 import { BigNumber } from "ethers";
 import { CantoMainnet } from "cantoui";
+import { cosmosApiEndpoint2 } from "constants/canto";
 
 
 export async function checkPubKey(bech32Address) {
@@ -15,7 +16,7 @@ export async function checkPubKey(bech32Address) {
     }
     try {
         const addressRawData = await fetch(
-           "https://mainnode.plexnode.org:1317" + endPointAccount,
+           "https://canto2.plexnode.wtf" + endPointAccount,
             options
         );
         const addressData = await addressRawData.json();
@@ -25,7 +26,7 @@ export async function checkPubKey(bech32Address) {
     }
 }
 export async function getCantoAddressFromMetaMask(address) {
-    const nodeURLMain = "https://mainnode.plexnode.org:1317";
+    const nodeURLMain = "https://canto2.plexnode.wtf";
     const result = await fetch(
       nodeURLMain + "/ethermint/evm/v1/cosmos_account/" + address,
       {
@@ -41,7 +42,7 @@ export async function getCantoAddressFromMetaMask(address) {
 }
 
 async function checkCantoBalance(bech32Address) {
-  const nodeURLMain = CantoMainnet.cosmosAPIEndpoint;
+  const nodeURLMain = cosmosApiEndpoint2;
   const result = await fetch(
     nodeURLMain + "/cosmos/bank/v1beta1/balances/" + bech32Address + "/by_denom?denom=acanto",
     {
@@ -131,7 +132,7 @@ export async function generatePubKey(hexAddress, setIsSuccess) {
 	senderBech32address,
 	amount
 ) {
-	const senderObj = await getSenderObj(senderHexAddress, "https://mainnode.plexnode.org:1317");
+	const senderObj = await getSenderObj(senderHexAddress, "https://canto2.plexnode.wtf");
 	const params = {
 		destinationAddress: destinationBech32,
 		amount: amount,
@@ -144,5 +145,5 @@ export async function generatePubKey(hexAddress, setIsSuccess) {
     gas: "250000",
   };
 	const msg = createMessageSend(chain, senderObj, sendFee, memo, params);
-	return signAndBroadcastTxMsg(msg, senderObj, chain, "https://mainnode.plexnode.org:1317", senderHexAddress);
+	return signAndBroadcastTxMsg(msg, senderObj, chain, "https://canto2.plexnode.wtf", senderHexAddress);
 }
