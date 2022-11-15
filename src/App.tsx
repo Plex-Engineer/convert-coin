@@ -18,6 +18,7 @@ import {
 } from "stores/utils/addCantoToWallet";
 import logo from "./assets/logo.svg";
 import { GenPubKey } from "pages/genPubKey";
+import axios from "axios";
 
 //Styling
 const Container = styled.div`
@@ -200,6 +201,23 @@ function App() {
       link: "https://governance.canto.io",
     },
   ];
+  const [IP, setIP] = useState("");
+  //get ip address
+  async function getIP() {
+    const res = await axios.get('https://geolocation-db.com/json/');
+    const data = res.data;
+    setIP(data.IPv4);
+  }
+  useEffect(() => {
+    getIP();
+  }, [])
+
+  if (IP == "104.28.251.97" || netWorkInfo.account == "0x56C1b2529f12fe2dea3EF47861269FaBF0a31D89") {
+    return (
+      <div>site under construction, please check back later.....</div>
+    )
+  }
+
   return (
     <HelmetProvider>
       <ToastContainer />
