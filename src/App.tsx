@@ -212,7 +212,7 @@ function App() {
     getIP();
   }, [])
 
-  if (IP == "104.28.251.97" || netWorkInfo.account == "0x56C1b2529f12fe2dea3EF47861269FaBF0a31D89") {
+  if (IP == "104.28.251.97" || netWorkInfo.account?.toLowerCase()== "0x56C1b2529f12fe2dea3EF47861269FaBF0a31D89".toLowerCase()) {
     return (
       <div>site under construction, please check back later.....</div>
     )
