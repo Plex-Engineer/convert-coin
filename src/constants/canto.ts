@@ -10,7 +10,7 @@ import USDT from "assets/icons/USDT.svg";
 import ATOM from "assets/icons/ATOM.svg";
 import Empty from "assets/icons/empty.svg"
 
-export const cosmosApiEndpoint2 = "https://canto2.plexnode.wtf";
+export const cosmosApiEndpoint2 = "https://canto.plexnode.wtf";
 
 export const icons = {
   Aqua: Aqua,
